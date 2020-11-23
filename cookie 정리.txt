@@ -1,0 +1,10 @@
+HTTP = tim berners-lee 
+Hyper Text Transfer Protocol
+	      < Response 응답
+WebBrowser  		  WebSerber
+	      > Request 요청
+
+express -> api reference -> req.cookies
+https://expressjs.com/en/5x/api.html#req.cookies
+
+npm site = https://www.npmjs.com/package/cookie-parser
