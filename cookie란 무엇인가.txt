@@ -1,0 +1,67 @@
+쿠키란?
+
+쿠키(cookie)란 하이퍼 텍스트의 기록서(HTTP)의 일종으로서
+인터넷 사용자가 어떠한 웹사이트를 방문할 경우
+그 사이트가 사용하고 있는 서버를통해 인터넷 사용자의
+컴퓨터에 설치되는 작은 기록 정보 파일을 일컫는다.
+HTTP 쿠키, 웹 쿠키, 브라우저 쿠키라고도 한다. 
+이 기록 파일에 담긴 정보는 인터넷 사용자가 같은 웹사이트를 방문할 때마다
+읽히고 수시로 새로운 정보로 바뀐다.
+Statless상태의 프로토콜에서 상태기반정보를 기억할 수 있는 쿠키가 개발되고
+서버는 쿠키를 이용하여 사용자 맞춤형 서비스, 웹 계정 권한부여, 로그인 유지 등
+현재는 일상이 되어 당연하게 여겼던 서비스들을 제공 할 수 있게 되었다.
+예로, 만약 쿠키가 없다면 11번가에서 어제 봤던 제품을 구매하기 위해서는
+제품명을 쳐서 다시 찾아가야하고 장바구니라는게 없어서
+수첩에 내가 구매해야할 제품들을 적어서 하나씩 구매해야 할 것이다.
+또한, 매 제품 구매 단계마다 로그인을 해야하는 번거로움이 있을 것이다.
+
+쿠키 옵션
+
+쿠키에는
+1. 클라이언트에 저장되는 키와 값들이 하드디스크에 저장되어 참조된다.
+2. 파일 안에는 이름, 값, 만료일(이 날짜에 따라 저장), 경로 정보 등이 들어 있다.
+이는 세션 관리, 개인화, 트래킹 이라는 목적을 갖게 된다.
+위에 쿠키의 내용이 적혀있는 사진을 통해 각 항목의 뜻하는 내용은,
+
+Name : 쿠키의 이름
+
+Size : 쿠키의 크키
+
+Value : 쿠키의 내용( 대부분의 경우 raw값을 노출시키 않기 위해 보안처리를 한다.)
+
+Domain :  쿠키가 전송되게 될 호스트들을 명시하며, 만약 명시되지 않았다면
+현재 문서 위치의 호스트를 기본값으로 갖는다. 
+도메인이 설정이 되면, 서브도메인들은 항상 포함이 된다. 
+(ex. www.google.com :기본 도메인 <-> docs.google.com : 서브 도메인)
+
+Path: cookie 헤더를 전송하기 위해서 요청되는 URL내에 반드시 존재해야할 URL이며,
+ “/” 문자는 디렉티브 구분자로 구분한다. (/path 로 지정했다면 하위
+ path(/path/auth/login …) 역시 포함)
+
+Expires / Max-Age : 만료기한을 걸어둔 쿠키의 쿠키 만료 시간을 제공한다.
+
+HTTP : Cross-site 스크립팅 (XSS) 공격 및 세션 하이재킹을 방지하기 위해
+ JavaScript의 Document.cookie API에 접근하지 못하도록 한다.
+
+Secure : HTTPS 프로토콜 상에서 암호화된 요청일 경우에만 전송하도록 강제한다.
+
+Samesite : 쿠키가 cross-site 요청과 함께 전송되지 않았음을 요구하게 만들어,
+ cross-site 요청 위조 공격(CSRF)에 대해 어떤 보호 방법을 제공한다.
+
+app.get(‘/count’, function(req, res){ 
+let count = req.cookies.count; 
+req.cookies.count = req.cookies.count ? parseInt(req.cookies.count) : count=0 count++;
+res.cookie(‘count’, count);
+res.send(‘count : ‘+ req.cookies.count); 
+});
+
+req.cookies를 통해 클라이언트의 cookie에 접근할 수 있고,
+res.cookie를 통해 cookie를 클라이언트에 제공할 수 있다.
+
+자세히 보려면 https://medium.com/@ddinggu/cookie%EB%9E%80-a650c6d2803e
+
+참고:
+https://developer.mozilla.org/ko/docs/Web/HTTP/Cookies
+http://interconnection.tistory.com/74
+https://ko.wikipedia.org/wiki/HTTP_%EC%BF%A0%ED%82%A4
+http://expressjs.com/en/4x/api.html#req.cookies
