@@ -51,6 +51,8 @@ app.get('/cart',function(req,res){
 app.get('/count', function(req,res){
     if(req.signedCookies.count){
     var count = parseInt(req.signedCookies.count);
+
+    
     } else {
     var count = 0;
     }
