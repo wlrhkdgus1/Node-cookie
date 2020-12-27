@@ -1,5 +1,6 @@
 var express = require('express');
-var session = require('express-session')
+var session = require('express-session');
+const { send } = require('process');
 var app = express();
 
 app.use(session({
@@ -16,6 +17,22 @@ app.get('/count', function(req, res){
       req.session.count = 1;
     }
     res.send("count : "+req.session.count)
+});
+app.get('/auth/login', function(req,res){
+  var ourput = `
+  <form action="/auth/login" method="post">
+    <p>
+      <input type="text" name="username" placeholder="username">
+    </p>
+    <p>
+      <input type="password" name="password" placeholder="password">
+    </p>
+    <p>
+      <input type="submit">
+    </p>
+  </form>
+  `;
+  res.send(ourput);
 });
 app.listen(3003, function(){
     console.log('Connected 3003 port!!!');
