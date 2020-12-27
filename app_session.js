@@ -1,7 +1,9 @@
 var express = require('express');
 var session = require('express-session');
+var bodyParser = require('body-parser'); //bodyParser 사용법1
 const { send } = require('process');
 var app = express();
+app.use(bodyParser.urlencoded({ extended: false})); // bodyParser 사용법2
 
 app.use(session({
     secret: '32Sdt@23SDwaSFRw',
@@ -18,8 +20,22 @@ app.get('/count', function(req, res){
     }
     res.send("count : "+req.session.count)
 });
+app.post('/auth/login',function(req,res){
+  var user = {
+    username:'amarans',
+    password:'111'
+  };
+  var uname = req.body.username;
+  var pwd = req.body.password;
+  if(uname === user.username && pwd === user.password){
+    res.redirect('/welcome');
+  }else{
+    res.send('Who are you? <a href="/auth/login">login</a>');
+  }
+});
 app.get('/auth/login', function(req,res){
   var ourput = `
+  <h1>Login</h1>
   <form action="/auth/login" method="post">
     <p>
       <input type="text" name="username" placeholder="username">
