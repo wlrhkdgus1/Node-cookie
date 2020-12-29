@@ -3,6 +3,7 @@ var session = require('express-session');
 var bodyParser = require('body-parser'); //bodyParser 사용법1
 const { send } = require('process');
 var app = express();
+
 app.use(bodyParser.urlencoded({ extended: false})); // bodyParser 사용법2
 
 app.use(session({
@@ -20,14 +21,33 @@ app.get('/count', function(req, res){
     }
     res.send("count : "+req.session.count)
 });
+app.get('/auth/logout', function(req,res){
+  delete req.session.displayName; // javascript 명령어 delete // session 데이터를 삭제시킴
+  res.redirect('/welcome');
+});
+app.get('/welcome', function(req,res){
+  if(req.session.displayName){
+    res.send(`
+      <h1>Hello, ${req.session.displayName}</h1>
+      <a href="/auth/logout">logout</a>
+    `);
+  } else {
+    res.send(`
+      <h1>Welcome</h1>
+      <a href="/auth/login">Login</a>
+    `)
+  }
+});
 app.post('/auth/login',function(req,res){
   var user = {
     username:'amarans',
-    password:'111'
+    password:'111',
+    displayName:'Amarans'
   };
   var uname = req.body.username;
   var pwd = req.body.password;
   if(uname === user.username && pwd === user.password){
+    req.session.displayName = user.displayName;
     res.redirect('/welcome');
   }else{
     res.send('Who are you? <a href="/auth/login">login</a>');
