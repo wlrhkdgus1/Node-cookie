@@ -1,0 +1,24 @@
+npm json 파일 만들려면 npm init
+
+아래 명령은 pm2를 실행하면서 로그가 출력되도록 합니다. 
+(--no-daemon) 또 특정 디랙토리에 대한 watch를 하지 않도록 하는 방법입니다. 
+
+원래는 pm2 start main.js --watch만 사용하였으나.
+
+pm2 start main.js --watch --ignore-watch="data/* sessions/*"  --no-daemon
+중요함.
+pm2 start main.js --watch --ignore-watch="sessions/* db.json" --no-daemon
+
+///////////			pm2 같은 프로세서 관리 프로그램 중에 파일이 수정되면 자동으로 restart하는 기능이 문제였습니다. (pm2는 --watch)
+
+///////////////		session.save의 매커니즘이 어떻게 되는지는 모르겠지만
+
+//////////			미들웨어가 sessions 파일을 건드리면 pm2가 파일이 변경된것으로 인식해 재시작 되면서
+
+//////////			session에 serialize가 안되는 문제가 생깁니다.
+
+///////////			pm2 에 --watch를 넣지 않고 수동으로 재시작 해주던가
+
+/////////			pm2 --watch --igonore-watch="sessions/* db.json"
+
+//////////////		이렇게 ignore 옵션을 넣어주면 해당 디렉토리의 모든 파일이나 지정된 파일이 수정되어도 무시합니다.
